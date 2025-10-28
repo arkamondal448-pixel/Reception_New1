@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const appointmentDateTimeInput = document.getElementById("appointmentDateTime");
   
 
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw-mvr6zP0PxNyQKNoyMyXEiM9U2aGjCnfKXJlmIqYec6NIRAMNmURMAmAV0TIBSbY2/exec";
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwCbP2sRzOzkT4g8ih5V5k5uOfgXNBmgcMqfcBpCLKWGKDpyQlUkofu94Lo5wEP9qm8/exec";
   
 
   purposeSelect.addEventListener("change", () => {
@@ -89,4 +89,5 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("❌ Error submitting data!");
     }
   });
+
 });
