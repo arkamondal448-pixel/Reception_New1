@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch(WEB_APP_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "text/plain" },
         body: JSON.stringify(formData),
       });
 
@@ -67,3 +67,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
