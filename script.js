@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const whomToMeetInput = document.getElementById("reference");
   const appointmentDateTimeInput = document.getElementById("appointmentDateTime");
 
-  // Replace with your deployed web app URL
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyNPH913darrWoU9f3wVCMjPS0nbVewzh68stIPbALxwK27mEc1oD9yVf1jVt7WuYy8/exec";
+  // Your deployed Google Apps Script web app URL
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwV6MPUsPS6-laaJV4zwsSort0J1qwZKj3wPy5dhOiNC-LD0G7Pu9We9tu_7S7ePJUu/exec";
 
   purposeSelect.addEventListener("change", () => {
     otherPurposeGroup.classList.toggle("hidden", purposeSelect.value !== "other");
@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     const formData = {
-      formType: "reception",
       visitorName: document.getElementById("visitorName").value.trim(),
       email: document.getElementById("email").value.trim(),
       phone: document.getElementById("phone").value.trim(),
@@ -40,17 +39,15 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      // Send JSON properly as application/json
       const response = await fetch(WEB_APP_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
-      // Check HTTP status
       if (!response.ok) {
         const text = await response.text();
-        throw new Error(`Network response was not ok: ${response.status} - ${text}`);
+        throw new Error(`HTTP Error ${response.status}: ${text}`);
       }
 
       const result = await response.json();
@@ -59,18 +56,14 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(result.error || "Failed to save data");
       }
 
-      // SUCCESS: show confirmation and reset form (no redirects)
-      alert("✅ Reception data saved!");
+      alert("✅ Reception data saved successfully!");
       form.reset();
       otherPurposeGroup.classList.add("hidden");
       appointmentDetailsGroup.classList.add("hidden");
-      whomToMeetInput.required = false;
-      appointmentDateTimeInput.required = false;
 
     } catch (error) {
       console.error("Error submitting reception data:", error);
       alert("❌ Error submitting data: " + (error.message || "Unknown error"));
     }
   });
-
 });
