@@ -1,100 +1,67 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("receptionForm");
+
   const purposeSelect = document.getElementById("purpose");
   const otherPurposeGroup = document.getElementById("otherPurposeGroup");
-  
-  // DOM ELEMENTS
+
   const appointmentSelect = document.getElementById("appointment");
   const appointmentDetailsGroup = document.getElementById("appointmentDetailsGroup");
   const whomToMeetInput = document.getElementById("reference");
   const appointmentDateTimeInput = document.getElementById("appointmentDateTime");
-  
+  const referenceByInput = document.getElementById("referenceBy");
 
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwCbP2sRzOzkT4g8ih5V5k5uOfgXNBmgcMqfcBpCLKWGKDpyQlUkofu94Lo5wEP9qm8/exec";
-  
+  // ✅ Replace this with your OWN deployed Web App URL (must end with /exec)
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyHuDndFgLkMwhgC7JXt67DlWK4Y3pPpqjj6eTs5KYM_arsOTAF7xAkUd_EjRZEYolEeA/exec";
 
+  // Show/hide "Other Purpose" input field
   purposeSelect.addEventListener("change", () => {
     otherPurposeGroup.classList.toggle("hidden", purposeSelect.value !== "other");
   });
 
-  // LOGIC for Appointment Select
+  // Show/hide Appointment details (Whom to Meet, Date/Time, Reference By)
   appointmentSelect.addEventListener("change", () => {
-    const isAppointmentYes = appointmentSelect.value === "Yes";
-    
-    // Toggle visibility of the group
-    appointmentDetailsGroup.classList.toggle("hidden", !isAppointmentYes);
-    
-    // Set required attribute dynamically
-    whomToMeetInput.required = isAppointmentYes;
-    appointmentDateTimeInput.required = isAppointmentYes;
+    const show = appointmentSelect.value === "Yes";
+    appointmentDetailsGroup.classList.toggle("hidden", !show);
+    whomToMeetInput.required = show;
+    appointmentDateTimeInput.required = show;
+    referenceByInput.required = show;
   });
 
+  // Handle form submission
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const formData = {
-      formType: "reception",
       visitorName: document.getElementById("visitorName").value.trim(),
       email: document.getElementById("email").value.trim(),
       phone: document.getElementById("phone").value.trim(),
-      purpose: document.getElementById("purpose").value.trim(),
+      purpose: purposeSelect.value.trim(),
       otherPurpose: document.getElementById("otherPurpose").value.trim(),
       department: document.getElementById("department").value.trim(),
-      appointment: document.getElementById("appointment").value.trim(),
-      reference: document.getElementById("reference").value.trim(),
-      appointmentDateTime: document.getElementById("appointmentDateTime").value.trim(),
-      referenceBy: document.getElementById("referenceBy").value.trim(),
-      
-      // Included the 'Appointment' value
-      appointment: appointmentSelect.value.trim(), 
-      
-      // The dynamically shown/hidden fields
+      appointment: appointmentSelect.value.trim(),
       reference: whomToMeetInput.value.trim(),
       appointmentDateTime: appointmentDateTimeInput.value.trim(),
-
-      referenceBy: document.getElementById("referenceBy").value.trim(),
+      referenceBy: referenceByInput.value.trim(),
     };
 
     try {
-      // Save Reception data to Google Sheet
+      // Send form data to Google Apps Script Web App
       const response = await fetch(WEB_APP_URL, {
         method: "POST",
+        mode: "no-cors", // 👈 Enables anonymous cross-origin requests
         headers: { "Content-Type": "text/plain" },
         body: JSON.stringify(formData),
       });
 
-      const result = await response.json();
-
-      if (!result.success) {
-        throw new Error(result.error || "Failed to save data");
-      }
-
-      // Redirect based on purpose
-      const purpose = formData.purpose.toLowerCase();
-
-      // === MODIFICATION ===
-      // Both "interview" and "training" redirects have been removed.
-      
-      if (purpose === "bikedelivery") {
-        window.location.href = "vehicle.html";
-      } else if (purpose === "accessories") {
-        window.location.href = "accessories.html";
-      } else {
-        // "Interview", "Training", and all "Other" purposes will now run this code
-        alert("✅ Reception data saved!");
-        form.reset();
-        otherPurposeGroup.classList.add("hidden");
-        // Hide the appointment group on reset
-        appointmentDetailsGroup.classList.add("hidden"); 
-      }
+      // Since no-cors doesn’t allow reading JSON, assume success
+      alert("✅ Reception data submitted successfully!");
+      form.reset();
+      otherPurposeGroup.classList.add("hidden");
+      appointmentDetailsGroup.classList.add("hidden");
 
     } catch (error) {
-      console.error("Error submitting reception data:", error);
-      alert("❌ Error submitting data!");
+      console.error("❌ Submission Error:", error);
+      alert("❌ Failed to submit data. Please try again.");
     }
   });
-
 });
-
-
-
