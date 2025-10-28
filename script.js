@@ -40,6 +40,10 @@ document.addEventListener("DOMContentLoaded", () => {
       purpose: document.getElementById("purpose").value.trim(),
       otherPurpose: document.getElementById("otherPurpose").value.trim(),
       department: document.getElementById("department").value.trim(),
+      appointment: document.getElementById("appointment").value.trim(),
+      reference: document.getElementById("reference").value.trim(),
+      appointmentDateTime: document.getElementById("appointmentDateTime").value.trim(),
+      referenceBy: document.getElementById("referenceBy").value.trim(),
       
       // Included the 'Appointment' value
       appointment: appointmentSelect.value.trim(), 
@@ -91,5 +95,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
 
 
