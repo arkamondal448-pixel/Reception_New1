@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const appointmentDateTimeInput = document.getElementById("appointmentDateTime");
   
 
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwfZOawfF-9Y0mwzMCT-WHnVwHbzH8diO1wV35Uq4xjoS8fXCYOOw0ThKoTBnenKFtU/exec";
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyNPH913darrWoU9f3wVCMjPS0nbVewzh68stIPbALxwK27mEc1oD9yVf1jVt7WuYy8/exec";
   
 
   purposeSelect.addEventListener("change", () => {
@@ -91,5 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
 
 
